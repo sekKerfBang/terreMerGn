@@ -1,0 +1,231 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html { -webkit-font-smoothing: antialiased; }
+  body {
+    @apply bg-slate-50 text-encre font-sans antialiased;
+    background-image:
+      radial-gradient(at 0% 0%, rgb(224 242 254 / .5) 0, transparent 45%),
+      radial-gradient(at 100% 0%, rgb(209 250 229 / .35) 0, transparent 45%);
+    background-attachment: fixed;
+  }
+  h1, h2, h3 { @apply font-display tracking-tight text-encre; }
+  h1 { @apply text-3xl md:text-4xl font-extrabold; }
+  h2 { @apply text-2xl md:text-3xl font-bold; }
+  h3 { @apply text-lg md:text-xl font-semibold; }
+}
+
+@layer components {
+  /* Conteneur principal */
+  .conteneur { @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8; }
+  .app { @apply min-h-screen flex flex-col; }
+  .app main { @apply flex-1 py-8; }
+
+  /* Boutons */
+  .btn-primaire {
+    @apply inline-flex items-center justify-center gap-2
+           bg-ocean-700 hover:bg-ocean-800 active:scale-[.98]
+           text-white font-semibold
+           px-5 py-2.5 rounded-xl shadow-soft
+           transition-all duration-200
+           disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+  .btn-secondaire {
+    @apply inline-flex items-center justify-center gap-2
+           bg-white hover:bg-slate-50 active:scale-[.98]
+           text-ocean-800 font-semibold
+           px-5 py-2.5 rounded-xl border border-ocean-200 shadow-soft
+           transition-all duration-200;
+  }
+  .btn-danger {
+    @apply inline-flex items-center justify-center gap-2
+           bg-red-600 hover:bg-red-700 text-white font-semibold
+           px-5 py-2.5 rounded-xl shadow-soft transition-all;
+  }
+  .btn-lien {
+    @apply text-ocean-700 hover:text-ocean-900 font-medium transition-colors;
+  }
+  .btn-ghost {
+    @apply inline-flex items-center gap-2 px-3 py-2 rounded-lg
+           text-slate-600 hover:text-encre hover:bg-slate-100 transition-colors;
+  }
+
+  /* Champs */
+  .input, input[type="text"], input[type="email"], input[type="password"],
+  input[type="number"], input[type="tel"], input[type="search"],
+  input[type="file"], select, textarea {
+    @apply w-full px-4 py-2.5 rounded-xl border border-slate-200 bg-white
+           text-encre placeholder:text-slate-400
+           focus:outline-none focus:ring-2 focus:ring-ocean-500/40
+           focus:border-ocean-500 transition-shadow;
+  }
+  label { @apply block text-sm font-medium text-slate-700 mb-1.5; }
+
+  /* Cartes */
+  .carte {
+    @apply bg-white rounded-2xl shadow-soft border border-slate-100;
+  }
+  .carte-annonce {
+    @apply block bg-white rounded-2xl shadow-soft border border-slate-100
+           overflow-hidden hover:shadow-card hover:-translate-y-0.5
+           transition-all duration-300;
+  }
+  .carte-annonce img,
+  .carte-annonce .img-placeholder {
+    @apply w-full h-48 object-cover;
+  }
+  .carte-annonce .img-placeholder {
+    @apply flex items-center justify-center text-5xl bg-gradient-to-br from-ocean-50 to-lagune-50;
+  }
+  .carte-annonce .carte-corps { @apply p-4 space-y-2; }
+  .carte-annonce h3 {
+    @apply font-semibold text-base leading-snug line-clamp-2
+           group-hover:text-ocean-700 transition-colors;
+  }
+
+  /* Badges */
+  .badge, .badge-secteur {
+    @apply inline-flex items-center gap-1 text-xs font-semibold
+           px-2.5 py-1 rounded-full bg-ocean-50 text-ocean-700
+           border border-ocean-100;
+  }
+  .badge-role {
+    @apply text-xs font-semibold px-2.5 py-1 rounded-full
+           bg-lagune-50 text-lagune-700 border border-lagune-100;
+  }
+  .badge-statut-actif   { @apply bg-lagune-50 text-lagune-700 border-lagune-100; }
+  .badge-statut-modere  { @apply bg-red-50 text-red-700 border-red-100; }
+  .badge-statut-vendu   { @apply bg-slate-100 text-slate-600 border-slate-200; }
+
+  .prix { @apply text-ocean-800 font-bold; }
+  .prix.grand { @apply text-3xl font-extrabold; }
+  .meta { @apply text-sm text-slate-500 flex items-center gap-1; }
+
+  /* Nav */
+  .navbar {
+    @apply sticky top-0 z-40 bg-white/85 backdrop-blur-md
+           border-b border-slate-200/70;
+  }
+  .logo {
+    @apply font-display font-extrabold text-xl text-ocean-900
+           flex items-center gap-2 hover:opacity-90;
+  }
+  .nav-liens { @apply flex items-center gap-2 md:gap-3; }
+
+  /* Grille annonces */
+  .grille {
+    @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5;
+  }
+
+  /* Hero */
+  .hero {
+    @apply relative overflow-hidden rounded-3xl
+           bg-gradient-to-br from-ocean-900 via-ocean-800 to-lagune-800
+           text-white px-6 md:px-12 py-14 md:py-20 shadow-card;
+  }
+  .hero h1 { @apply text-white text-3xl md:text-5xl max-w-2xl leading-tight; }
+  .hero p { @apply text-ocean-50 text-base md:text-lg mt-4 max-w-xl; }
+  .hero-actions { @apply flex flex-wrap gap-3 mt-8; }
+
+  .carte-secteur {
+    @apply carte p-6 text-center hover:shadow-card hover:-translate-y-0.5
+           transition-all duration-300;
+  }
+  .carte-secteur .emoji { @apply text-4xl block mb-3; }
+
+  /* Filtres */
+  .filtres {
+    @apply carte p-4 grid grid-cols-1 md:grid-cols-4 gap-3 mb-6;
+  }
+
+  /* Forms container */
+  .form-box {
+    @apply carte p-6 md:p-8 max-w-lg mx-auto mt-6 animate-fade-up;
+  }
+  .form-box.large { @apply max-w-2xl; }
+  .erreur {
+    @apply bg-red-50 text-red-700 border border-red-200 rounded-xl p-3 text-sm mb-4;
+  }
+
+  /* Messagerie */
+  .messagerie {
+    @apply grid grid-cols-1 md:grid-cols-[300px_1fr] gap-4
+           h-[calc(100vh-180px)] min-h-[500px];
+  }
+  .liste-conversations {
+    @apply carte p-3 overflow-y-auto;
+  }
+  .liste-conversations h3 { @apply px-2 py-2 text-slate-500 text-sm uppercase tracking-wide; }
+  .conversation {
+    @apply w-full text-left p-3 rounded-xl hover:bg-slate-50
+           transition-colors flex flex-col gap-1 relative;
+  }
+  .conversation.active { @apply bg-ocean-50 ring-1 ring-ocean-200; }
+  .conversation strong { @apply text-sm font-semibold text-encre; }
+  .conversation small { @apply text-xs text-slate-500 truncate; }
+  .role-mini { @apply text-[10px] uppercase tracking-wide text-slate-400; }
+  .badge-non-lus {
+    @apply absolute top-3 right-3 bg-ocean-600 text-white
+           text-[10px] font-bold px-1.5 py-0.5 rounded-full min-w-[18px] text-center;
+  }
+  .fil-messages { @apply carte flex flex-col overflow-hidden; }
+  .messages-scroll {
+    @apply flex-1 overflow-y-auto p-4 space-y-3 bg-slate-50/50;
+  }
+  .bulle {
+    @apply max-w-[75%] px-4 py-2 rounded-2xl shadow-soft text-sm animate-fade-up;
+  }
+  .bulle.moi {
+    @apply ml-auto bg-ocean-700 text-white rounded-br-md;
+  }
+  .bulle.lui {
+    @apply bg-white border border-slate-100 rounded-bl-md;
+  }
+  .bulle small { @apply block text-[10px] opacity-70 mt-1; }
+  .form-message {
+    @apply flex gap-2 p-3 border-t border-slate-100 bg-white;
+  }
+
+  /* Admin */
+  .stats-grille {
+    @apply grid grid-cols-2 md:grid-cols-4 gap-4 my-6;
+  }
+  .carte-stat {
+    @apply carte p-5 text-center hover:shadow-card transition-shadow;
+  }
+  .carte-stat h3 { @apply text-3xl font-extrabold text-ocean-800; }
+  .carte-stat p { @apply text-xs text-slate-500 uppercase tracking-wide mt-1; }
+  .table-admin {
+    @apply w-full text-sm border-collapse carte overflow-hidden;
+  }
+  .table-admin th {
+    @apply text-left px-4 py-3 bg-slate-50 text-slate-600
+           font-semibold text-xs uppercase tracking-wide border-b;
+  }
+  .table-admin td {
+    @apply px-4 py-3 border-b border-slate-100 align-middle;
+  }
+  .table-admin tr:hover td { @apply bg-slate-50/50; }
+
+  /* Footer */
+  .footer {
+    @apply border-t border-slate-200 bg-white/80 backdrop-blur
+           py-6 text-center text-sm text-slate-500;
+  }
+  .centrer { @apply text-center py-12 text-slate-500; }
+
+  /* Utilitaires */
+  .ligne-2 { @apply grid grid-cols-1 sm:grid-cols-2 gap-3; }
+  .ligne-3 { @apply grid grid-cols-1 sm:grid-cols-3 gap-3; }
+  .choix-roles { @apply flex flex-wrap gap-2 mb-4; }
+  .choix-roles button {
+    @apply px-4 py-2 rounded-full border border-slate-200 bg-white
+           text-sm font-medium text-slate-600
+           hover:border-ocean-300 hover:text-ocean-700 transition-all;
+  }
+  .choix-roles button.role-actif {
+    @apply bg-ocean-700 text-white border-ocean-700 shadow-soft;
+  }
+}
