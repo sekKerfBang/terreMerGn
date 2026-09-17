@@ -4,6 +4,7 @@ import {
   Menu, X, LogOut, Plus, MessageSquare, Shield, User as UserIcon, ChevronDown,
 } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
+import logo from "../public/logos/logo1.png";
 
 export default function Navbar() {
   const { user, logout } = useAuth();
@@ -52,8 +53,8 @@ export default function Navbar() {
     <header className="sticky top-0 z-40 bg-white/85 backdrop-blur-md border-b border-slate-100">
       <nav className="conteneur flex items-center justify-between h-16">
         <Link to="/" className="flex items-center gap-2 font-display font-extrabold text-xl text-encre">
-          <span className="text-2xl">🌍</span>
-          Terre<span className="text-lagune-600">Mer</span>Gn
+          <img src={logo} alt="TerreMerGn" className="w-10 h-10 object-contain" />
+          <span>Terre<span className="text-lagune-600">Mer</span>Gn</span>
         </Link>
 
         {/* Desktop */}

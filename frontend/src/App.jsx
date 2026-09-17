@@ -16,6 +16,7 @@ import Paiement from "./pages/Paiement";
 import Profil from "./pages/Profil";
 import MotDePasseOublie from "./pages/MotDePasseOublie";
 import ReinitialiserMotDePasse from "./pages/ReinitialiserMotDePasse";
+import Contact from "./pages/Contact";
 
 function Page404() {
   return (
@@ -46,6 +47,7 @@ export default function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/mot-de-passe-oublie" element={<MotDePasseOublie />} />
           <Route path="/reset-password/:uid/:token" element={<ReinitialiserMotDePasse />} />
+          <Route path="/contact" element={<Contact />} />
 
           <Route path="/annonces" element={<Annonces />} />
           <Route path="/annonces/:id" element={<AnnonceDetail />} />

@@ -79,3 +79,16 @@ class PasswordResetConfirmSerializer(serializers.Serializer):
         user.set_password(self.validated_data["nouveau_mot_de_passe"])
         user.save(update_fields=["password"])
         return user
+
+
+class ContactSerializer(serializers.Serializer):
+    nom = serializers.CharField(max_length=120)
+    email = serializers.EmailField()
+    telephone = serializers.CharField(max_length=30, required=False, allow_blank=True)
+    motif = serializers.ChoiceField(choices=[
+        ("ASSISTANCE", "Assistance"),
+        ("SIGNALEMENT", "Signaler un problème"),
+        ("PARTENARIAT", "Partenariat"),
+        ("AUTRE", "Autre demande"),
+    ])
+    message = serializers.CharField(max_length=5000)

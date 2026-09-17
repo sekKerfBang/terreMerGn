@@ -49,34 +49,27 @@ Le proxy Vite redirige `/api` vers Django : aucune config supplémentaire.
 
 ## ☁️ Déploiement Render (forfait gratuit)
 
-### Backend (Web Service)
+Le fichier `render.yaml` décrit les deux services gratuits. Pour les créer :
 
-1. Poussez le dépôt sur GitHub.
-2. Render → **New → Web Service** → sélectionnez le dépôt.
-3. Build Command : `./build.sh`
-4. Start Command : `gunicorn backend.wsgi:application`
-5. Variables d'environnement :
-   - `DEBUG=False`
-   - `SECRET_KEY` = générez-en une (`python -c "from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())"`)
-   - `ALLOWED_HOSTS` = `votre-app.onrender.com`
-6. ⚠️ **Base de données** : le forfait gratuit de Render ne propose pas de PostgreSQL
-   persistant. Pour démarrer, SQLite fonctionne (le fichier `db.sqlite3` est recréé
-   à chaque déploiement — les données de démo sont perdues). Pour la suite, ajoutez
-   `DATABASE_URL` depuis un hébergeur PostgreSQL gratuit (Neon, Supabase).
+1. Poussez le dépôt sur GitHub et ouvrez Render.
+2. Sélectionnez **New → Blueprint** puis le dépôt et la branche `pre-prod`.
+3. Render détecte `render.yaml` et crée `terremergn-api` et `terremergn-frontend`.
+4. Renseignez les variables marquées `sync: false` dans le formulaire Render.
 
-### Frontend (Static Site)
+Variables obligatoires pour le backend :
 
-1. Render → **New → Static Site** → dossier racine : `frontend`.
-2. Build Command : `npm install && npm run build`
-3. Publish Directory : `frontend/dist`
-4. Variable : `VITE_API_URL=https://votre-app.onrender.com/api`
+- `DATABASE_URL` : PostgreSQL externe, par exemple Neon ou Supabase.
+- `EMAIL_HOST`, `EMAIL_HOST_USER`, `EMAIL_HOST_PASSWORD` et `DEFAULT_FROM_EMAIL` pour le reset de mot de passe.
+
+L'URL API frontend est configurée automatiquement vers `terremergn-api.onrender.com`.
+Les migrations et `collectstatic` sont exécutés au démarrage de l'image backend.
 
 ### Limites du forfait gratuit à connaître
 
 - **Cold start** : l'API s'endort après 15 min d'inactivité → le premier appel prend ~30 s.
   Dites-le aux testeurs, ou gardez l'app active avec un ping (UptimeRobot gratuit).
-- **Pas de stockage de fichiers persistant** : les images d'annonces seront perdues
-  à chaque redéploiement. Prévoyez Cloudinary (gratuit) dès que possible.
+- **Pas de stockage de fichiers persistant** : les images d'annonces et de profils seront perdues
+  à chaque redéploiement. Utilisez Cloudinary ou un stockage objet dès que possible.
 
 ## 🔑 Mot de passe oublié
 
@@ -94,9 +87,13 @@ cp .env.example .env
 docker compose up --build
 ```
 
-Le frontend est disponible sur `http://localhost:3000` et transmet `/api` et `/media`
-au backend sur `http://localhost:8000`. `DATABASE_URL` doit pointer vers une base PostgreSQL
-accessible depuis le conteneur backend.
+Le frontend est disponible sur `http://localhost:3000`, Mailpit sur `http://localhost:8025`
+et le backend sur `http://localhost:8000`. Les e-mails de récupération de mot de passe
+apparaissent dans Mailpit et ne sont pas envoyés vers une vraie boîte.
+
+En lançant Django directement avec `python manage.py runserver`, Mailpit doit être démarré
+sur `localhost:1025`. `DATABASE_URL` doit pointer vers une base PostgreSQL accessible depuis
+le backend.
 
 ## 🔁 CI/CD et pre-prod
 
