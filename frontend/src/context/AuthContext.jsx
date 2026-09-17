@@ -37,8 +37,10 @@ export function AuthProvider({ children }) {
     setUser(null);
   };
 
+  const mettreAJourUtilisateur = (donnees) => setUser(donnees);
+
   return (
-    <AuthContext.Provider value={{ user, login, register, logout, chargement }}>
+    <AuthContext.Provider value={{ user, login, register, logout, mettreAJourUtilisateur, chargement }}>
       {children}
     </AuthContext.Provider>
   );

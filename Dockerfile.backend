@@ -1,0 +1,23 @@
+FROM python:3.12-slim
+
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1
+
+WORKDIR /app
+
+# Les dépendances PostgreSQL et Pillow peuvent nécessiter ces bibliothèques système.
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends build-essential libpq-dev libpq5 libjpeg62-turbo \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY . .
+
+RUN chmod +x build.sh
+
+EXPOSE 8000
+
+# Les migrations et les fichiers statiques sont préparés à chaque démarrage.
+CMD ["sh", "-c", "python manage.py migrate && python manage.py collectstatic --no-input && gunicorn backend.wsgi:application --bind 0.0.0.0:8000"]

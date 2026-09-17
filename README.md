@@ -20,7 +20,7 @@ React (frontend) + Django REST (backend), déployable gratuitement sur Render.
 
 ```bash
 python -m venv venv
-source venv/bin/activate        # Windows : venv\Scriptsctivate
+source venv/bin/activate        # Windows : venv\Scripts\activate
 pip install -r requirements.txt
 python manage.py migrate
 python seed.py                  # données de démo
@@ -77,6 +77,33 @@ Le proxy Vite redirige `/api` vers Django : aucune config supplémentaire.
   Dites-le aux testeurs, ou gardez l'app active avec un ping (UptimeRobot gratuit).
 - **Pas de stockage de fichiers persistant** : les images d'annonces seront perdues
   à chaque redéploiement. Prévoyez Cloudinary (gratuit) dès que possible.
+
+## 🔑 Mot de passe oublié
+
+Depuis la page de connexion, l'utilisateur peut demander un lien avec son adresse e-mail.
+En développement, le lien est affiché dans la console Django. En production, configurez
+`EMAIL_HOST`, `EMAIL_PORT`, `EMAIL_HOST_USER`, `EMAIL_HOST_PASSWORD`, `EMAIL_USE_TLS`,
+`DEFAULT_FROM_EMAIL` et `FRONTEND_URL`.
+
+## 🐳 Conteneurs Docker
+
+Les deux services peuvent être lancés avec Docker Compose :
+
+```bash
+cp .env.example .env
+docker compose up --build
+```
+
+Le frontend est disponible sur `http://localhost:3000` et transmet `/api` et `/media`
+au backend sur `http://localhost:8000`. `DATABASE_URL` doit pointer vers une base PostgreSQL
+accessible depuis le conteneur backend.
+
+## 🔁 CI/CD et pre-prod
+
+La branche `pre-prod` déclenche `.github/workflows/ci-cd.yml`. La pipeline vérifie Django,
+les migrations, le build React et construit les deux images Docker. Pour déclencher un
+déploiement Render, ajoutez le secret GitHub `RENDER_PREPROD_DEPLOY_HOOK` dans l'environnement
+`pre-prod`.
 
 ## 🗺️ Prochaines étapes
 

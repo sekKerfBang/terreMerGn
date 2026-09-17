@@ -1,0 +1,217 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700;800&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-sable text-encre font-sans antialiased;
+  }
+  h1, h2, h3, h4 {
+    @apply font-display font-bold tracking-tight;
+  }
+  h1 { @apply text-3xl md:text-4xl; }
+  h2 { @apply text-2xl md:text-3xl; }
+  label {
+    @apply block text-sm font-semibold text-slate-600 mb-1.5;
+  }
+  input, select, textarea {
+    @apply w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-white text-sm
+           placeholder:text-slate-400 outline-none transition-all duration-200
+           focus:border-ocean-500 focus:ring-4 focus:ring-ocean-100;
+  }
+  ::selection { @apply bg-ocean-200 text-ocean-900; }
+  ::-webkit-scrollbar { width: 8px; height: 8px; }
+  ::-webkit-scrollbar-thumb { @apply bg-slate-300 rounded-full; }
+  ::-webkit-scrollbar-thumb:hover { @apply bg-slate-400; }
+}
+
+@layer components {
+  .conteneur { @apply max-w-6xl mx-auto px-4; }
+
+  /* ---------- Boutons ---------- */
+  .btn-primaire {
+    @apply inline-flex items-center justify-center gap-2 bg-ocean-700 text-white
+           font-semibold text-sm px-5 py-2.5 rounded-xl transition-all duration-200
+           hover:bg-ocean-800 hover:shadow-lift active:scale-[0.98]
+           disabled:opacity-60 disabled:pointer-events-none;
+  }
+  .btn-secondaire {
+    @apply inline-flex items-center justify-center gap-2 bg-white text-ocean-800
+           font-semibold text-sm px-5 py-2.5 rounded-xl border-2 border-ocean-700
+           transition-all duration-200 hover:bg-ocean-50 active:scale-[0.98]
+           disabled:opacity-60 disabled:pointer-events-none;
+  }
+  .btn-ghost {
+    @apply inline-flex items-center gap-1.5 text-sm font-medium text-slate-500
+           px-3 py-2 rounded-lg transition-colors hover:text-ocean-800 hover:bg-ocean-50;
+  }
+  .btn-danger {
+    @apply inline-flex items-center justify-center gap-2 bg-red-600 text-white
+           font-semibold text-sm px-4 py-2 rounded-xl transition-all duration-200
+           hover:bg-red-700 active:scale-[0.98];
+  }
+
+  /* ---------- Cartes ---------- */
+  .carte {
+    @apply bg-white rounded-2xl shadow-soft border border-slate-100;
+  }
+  .carte-secteur {
+    @apply carte p-6 text-center transition-all duration-300
+           hover:-translate-y-1.5 hover:shadow-lift cursor-pointer;
+  }
+
+  /* ---------- Badges ---------- */
+  .badge {
+    @apply inline-flex items-center gap-1 bg-slate-100 text-slate-600
+           text-xs font-semibold px-2.5 py-1 rounded-full;
+  }
+  .badge-secteur {
+    @apply inline-flex items-center gap-1 bg-ocean-50 text-ocean-700
+           text-xs font-bold px-2.5 py-1 rounded-full;
+  }
+  .badge-statut-active { @apply bg-emerald-50 text-emerald-700; }
+  .badge-statut-moderee { @apply bg-amber-50 text-amber-700; }
+  .badge-statut-vendu { @apply bg-slate-200 text-slate-500; }
+
+  /* ---------- Formulaires ---------- */
+  .form-box {
+    @apply carte max-w-md mx-auto my-10 p-8 animate-fade-up;
+  }
+  .form-box.large { @apply max-w-2xl; }
+  .erreur {
+    @apply bg-red-50 text-red-700 text-sm font-medium rounded-xl px-4 py-3
+           border border-red-100 animate-slide-in;
+  }
+
+  /* ---------- Hero ---------- */
+  .hero {
+    @apply relative overflow-hidden rounded-3xl text-center text-white px-6 py-16 md:py-24;
+    background: linear-gradient(130deg, #052e23 0%, #0a513c 55%, #0d6b4f 100%);
+  }
+  .hero h1 { @apply text-3xl md:text-5xl leading-tight; }
+  .hero p { @apply text-white/80 text-base md:text-lg max-w-2xl mx-auto mt-4; }
+  .hero-actions { @apply flex flex-wrap gap-3 justify-center mt-8; }
+
+  /* ---------- Grille annonces ---------- */
+  .grille {
+    @apply grid gap-5;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  }
+  .carte-annonce {
+    @apply carte overflow-hidden block text-inherit no-underline
+           transition-all duration-300 hover:-translate-y-1.5 hover:shadow-lift;
+  }
+  .carte-annonce img {
+    @apply w-full h-44 object-cover transition-transform duration-500 group-hover:scale-105;
+  }
+  .img-placeholder {
+    @apply h-44 flex items-center justify-center text-5xl bg-gradient-to-br
+           from-ocean-50 to-lagune-50;
+  }
+  .carte-corps { @apply p-4; }
+  .carte-corps h3 {
+    @apply text-base font-bold mt-2.5 line-clamp-2 leading-snug
+           group-hover:text-ocean-700 transition-colors;
+  }
+  .prix { @apply text-ocean-700 font-extrabold mt-1.5; }
+  .prix.grand { @apply text-3xl; }
+  .meta { @apply flex items-center gap-1 text-slate-400 text-xs mt-2.5; }
+
+  /* ---------- Filtres ---------- */
+  .filtres {
+    @apply grid gap-3 md:grid-cols-[2fr_1fr_1fr] mb-8;
+  }
+
+  /* ---------- Détail ---------- */
+  .detail-image img { @apply w-full rounded-2xl object-cover max-h-[540px]; }
+
+  /* ---------- Messagerie ---------- */
+  .messagerie {
+    @apply grid gap-4;
+    grid-template-columns: 320px 1fr;
+    height: calc(100vh - 220px);
+    min-height: 480px;
+  }
+  @media (max-width: 860px) {
+    .messagerie { grid-template-columns: 1fr; height: calc(100vh - 190px); }
+    .messagerie.avec-fil .liste-conversations { display: none; }
+    .messagerie.sans-fil .fil-messages { display: none; }
+  }
+  .liste-conversations {
+    @apply carte p-3 overflow-y-auto space-y-1;
+  }
+  .conversation {
+    @apply relative w-full text-left flex flex-col gap-0.5 p-3 rounded-xl
+           transition-colors hover:bg-slate-50;
+  }
+  .conversation.active { @apply bg-ocean-50; }
+  .conversation small { @apply text-slate-400 truncate; }
+  .role-mini { @apply text-xs text-ocean-600 font-semibold; }
+  .badge-non-lus {
+    @apply absolute top-3 right-3 bg-red-500 text-white text-[10px] font-bold
+           rounded-full min-w-[20px] h-5 flex items-center justify-center px-1;
+  }
+  .fil-messages {
+    @apply carte flex flex-col overflow-hidden;
+  }
+  .entete-fil { @apply flex items-center gap-3 px-4 py-3 border-b border-slate-100; }
+  .messages-scroll {
+    @apply flex-1 overflow-y-auto p-4 space-y-2 flex flex-col;
+  }
+  .bulle {
+    @apply max-w-[75%] px-4 py-2.5 rounded-2xl text-sm leading-relaxed animate-pop;
+  }
+  .bulle.moi {
+    @apply self-end bg-ocean-700 text-white rounded-br-md;
+  }
+  .bulle.moi small { @apply text-white/60; }
+  .bulle.lui {
+    @apply self-start bg-slate-100 text-encre rounded-bl-md;
+  }
+  .bulle small { @apply block text-[10px] mt-1 opacity-70; }
+  .bulle.non-lu { @apply ring-2 ring-lagune-300; }
+  .form-message {
+    @apply flex gap-2 p-3 border-t border-slate-100 bg-white;
+  }
+
+  /* ---------- Admin ---------- */
+  .stats-grille {
+    @apply grid grid-cols-2 md:grid-cols-4 gap-4;
+  }
+  .carte-stat {
+    @apply carte p-5 text-center transition-all duration-300 hover:-translate-y-1 hover:shadow-lift;
+  }
+  .carte-stat h3 { @apply text-3xl font-extrabold text-ocean-700; }
+  .carte-stat p { @apply text-sm text-slate-500 mt-1; }
+  .barre-progres {
+    @apply h-2 rounded-full bg-slate-100 overflow-hidden;
+  }
+  .barre-progres > div { @apply h-full rounded-full bg-ocean-500 transition-all duration-700; }
+  .table-admin { @apply w-full text-sm; }
+  .table-admin th {
+    @apply text-left text-xs font-bold uppercase tracking-wide text-slate-400
+           px-5 py-3 border-b border-slate-100 bg-slate-50;
+  }
+  .table-admin td { @apply px-5 py-3.5 border-b border-slate-50 align-middle; }
+  .table-admin tbody tr { @apply transition-colors hover:bg-slate-50; }
+
+  /* ---------- Divers ---------- */
+  .centrer { @apply text-center py-16 text-slate-400; }
+  .squelette {
+    @apply rounded-xl bg-slate-100 animate-shimmer;
+    background-image: linear-gradient(90deg, transparent, rgba(255,255,255,0.7), transparent);
+    background-size: 400px 100%;
+    background-repeat: no-repeat;
+  }
+  .footer { @apply bg-ocean-900 text-white/80 mt-16; }
+  .input-icone { @apply absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none; }
+}
+
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
