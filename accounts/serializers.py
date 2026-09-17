@@ -21,6 +21,61 @@ class UtilisateurSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Utilisateur
-        fields = ["id", "username", "first_name", "last_name", "email",
+        fields = ["id", "username", "first_name", "last_name", "email", "avatar",
                   "telephone", "localite", "role", "role_display", "bio", "is_staff"]
         read_only_fields = ["is_staff"]
+
+
+class PasswordChangeSerializer(serializers.Serializer):
+    ancien_mot_de_passe = serializers.CharField(write_only=True)
+    nouveau_mot_de_passe = serializers.CharField(write_only=True, min_length=6)
+    confirmation_mot_de_passe = serializers.CharField(write_only=True)
+
+    def validate(self, attrs):
+        user = self.context["request"].user
+        if not user.check_password(attrs["ancien_mot_de_passe"]):
+            raise serializers.ValidationError({"ancien_mot_de_passe": "Mot de passe actuel incorrect."})
+        if attrs["nouveau_mot_de_passe"] != attrs["confirmation_mot_de_passe"]:
+            raise serializers.ValidationError({"confirmation_mot_de_passe": "Les mots de passe ne correspondent pas."})
+        return attrs
+
+    def save(self, **kwargs):
+        user = self.context["request"].user
+        user.set_password(self.validated_data["nouveau_mot_de_passe"])
+        user.save(update_fields=["password"])
+        return user
+
+
+class PasswordResetRequestSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+
+
+class PasswordResetConfirmSerializer(serializers.Serializer):
+    uid = serializers.CharField()
+    token = serializers.CharField()
+    nouveau_mot_de_passe = serializers.CharField(write_only=True, min_length=6)
+    confirmation_mot_de_passe = serializers.CharField(write_only=True)
+
+    def validate(self, attrs):
+        from django.contrib.auth.tokens import default_token_generator
+        from django.utils.http import urlsafe_base64_decode
+
+        try:
+            user_id = urlsafe_base64_decode(attrs["uid"]).decode()
+            user = Utilisateur.objects.get(pk=user_id)
+        except (TypeError, ValueError, OverflowError, Utilisateur.DoesNotExist):
+            raise serializers.ValidationError({"token": "Lien de réinitialisation invalide."})
+
+        if not default_token_generator.check_token(user, attrs["token"]):
+            raise serializers.ValidationError({"token": "Lien de réinitialisation expiré ou invalide."})
+        if attrs["nouveau_mot_de_passe"] != attrs["confirmation_mot_de_passe"]:
+            raise serializers.ValidationError({"confirmation_mot_de_passe": "Les mots de passe ne correspondent pas."})
+
+        attrs["user"] = user
+        return attrs
+
+    def save(self, **kwargs):
+        user = self.validated_data["user"]
+        user.set_password(self.validated_data["nouveau_mot_de_passe"])
+        user.save(update_fields=["password"])
+        return user

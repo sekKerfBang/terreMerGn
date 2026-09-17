@@ -11,6 +11,7 @@ class Utilisateur(AbstractUser):
 
     telephone = models.CharField("Téléphone", max_length=20, blank=True)
     localite = models.CharField("Localité", max_length=100, blank=True)
+    avatar = models.ImageField("Photo de profil", upload_to="avatars/", blank=True, null=True)
     role = models.CharField(max_length=20, choices=Role.choices, default=Role.ACHETEUR)
     bio = models.TextField("Bio", blank=True)
 

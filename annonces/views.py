@@ -21,6 +21,9 @@ class AnnonceViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         qs = Annonce.objects.select_related("categorie", "auteur")
+        if self.request.user.is_staff:
+            return qs
+
         # Tout le monde voit les annonces actives ; l'auteur voit aussi les siennes
         if self.request.user.is_authenticated:
             return qs.filter(statut="ACTIVE") | qs.filter(auteur=self.request.user)
