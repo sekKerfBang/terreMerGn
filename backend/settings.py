@@ -101,17 +101,25 @@ STORAGES = {
 MEDIA_URL = "media/"
 MEDIA_ROOT = BASE_DIR / "media"
 
-FRONTEND_URL = os.environ.get("FRONTEND_URL", "http://localhost:3000")
+FRONTEND_URL = os.environ.get("FRONTEND_URL", "http://localhost:3000").strip().rstrip("/")
+
+if not FRONTEND_URL.startswith(("http://", "https://")):
+    FRONTEND_URL = f"https://{FRONTEND_URL}"
+
+CORS_ALLOWED_ORIGINS = [
+    origin.strip().rstrip("/")
+    for origin in os.environ.get("CORS_ALLOWED_ORIGINS", FRONTEND_URL).split(",")
+    if origin.strip()
+]
+CSRF_TRUSTED_ORIGINS = CORS_ALLOWED_ORIGINS
 DEFAULT_FROM_EMAIL = os.environ.get("DEFAULT_FROM_EMAIL", "noreply@terremergn.local")
-EMAIL_BACKEND = os.environ.get(
-    "EMAIL_BACKEND",
-    "django.core.mail.backends.console.EmailBackend" if DEBUG else "django.core.mail.backends.smtp.EmailBackend",
-)
-EMAIL_HOST = os.environ.get("EMAIL_HOST", "")
-EMAIL_PORT = int(os.environ.get("EMAIL_PORT", "587"))
+CONTACT_EMAIL = os.environ.get("CONTACT_EMAIL", "contact@terremergn.com")
+EMAIL_BACKEND = os.environ.get("EMAIL_BACKEND", "django.core.mail.backends.smtp.EmailBackend")
+EMAIL_HOST = os.environ.get("EMAIL_HOST", "localhost")
+EMAIL_PORT = int(os.environ.get("EMAIL_PORT", "1025"))
 EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER", "")
 EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD", "")
-EMAIL_USE_TLS = os.environ.get("EMAIL_USE_TLS", "True") == "True"
+EMAIL_USE_TLS = os.environ.get("EMAIL_USE_TLS", "False") == "True"
 
 AUTH_USER_MODEL = "accounts.Utilisateur"
 
@@ -136,5 +144,5 @@ SIMPLE_JWT = {
     "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
 }
 
-CORS_ALLOW_ALL_ORIGINS = DEBUG  # À restreindre en production
+CORS_ALLOW_ALL_ORIGINS = DEBUG
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"

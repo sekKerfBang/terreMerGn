@@ -23,8 +23,8 @@ export default {
         sable: "#f5f7f4",
       },
       fontFamily: {
-        sans: ["Inter", "system-ui", "sans-serif"],
-        display: ["Sora", "Inter", "sans-serif"],
+        sans: ["Manrope", "system-ui", "sans-serif"],
+        display: ["Plus Jakarta Sans", "Manrope", "sans-serif"],
       },
       boxShadow: {
         soft: "0 2px 12px rgba(20, 32, 27, 0.06)",

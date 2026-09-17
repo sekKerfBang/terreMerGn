@@ -5,6 +5,13 @@ import { Toaster } from "react-hot-toast";
 import App from "./App";
 import { AuthProvider } from "./context/AuthContext";
 import "./index.css";
+import logo from "./public/logos/logo1.png";
+
+const favicon = document.createElement("link");
+favicon.rel = "icon";
+favicon.type = "image/png";
+favicon.href = logo;
+document.head.appendChild(favicon);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <BrowserRouter>

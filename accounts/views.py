@@ -6,7 +6,7 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 from django.contrib.auth import get_user_model
 from django.contrib.auth.tokens import default_token_generator
 from django.conf import settings
-from django.core.mail import send_mail
+from django.core.mail import EmailMessage, send_mail
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
 from .serializers import (
@@ -15,6 +15,7 @@ from .serializers import (
     PasswordChangeSerializer,
     PasswordResetRequestSerializer,
     PasswordResetConfirmSerializer,
+    ContactSerializer,
 )
 
 Utilisateur = get_user_model()
@@ -84,4 +85,28 @@ class PasswordResetConfirmView(APIView):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response({"detail": "Mot de passe réinitialisé avec succès."})
+
+
+class ContactView(APIView):
+    permission_classes = [permissions.AllowAny]
+
+    def post(self, request):
+        serializer = ContactSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        data = serializer.validated_data
+        EmailMessage(
+            f"Nouveau contact TerreMerGn - {data['motif']}",
+            "\n".join([
+                f"Nom : {data['nom']}",
+                f"E-mail : {data['email']}",
+                f"Téléphone : {data.get('telephone') or 'Non renseigné'}",
+                f"Motif : {data['motif']}",
+                "",
+                data["message"],
+            ]),
+            settings.DEFAULT_FROM_EMAIL,
+            [settings.CONTACT_EMAIL],
+            reply_to=[data["email"]],
+        ).send(fail_silently=False)
+        return Response({"detail": "Votre message a bien été envoyé."})
 

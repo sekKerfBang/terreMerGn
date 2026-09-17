@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { Mail, Phone, MapPin } from "lucide-react";
+import logo from "../public/logos/logo1.png";
 
 export default function Footer() {
   return (
@@ -7,8 +8,8 @@ export default function Footer() {
       <div className="conteneur py-12 grid gap-10 md:grid-cols-4">
         <div className="md:col-span-2">
           <div className="flex items-center gap-2 font-display font-extrabold text-xl text-white">
-            <span className="text-2xl">🌍</span>
-            Terre<span className="text-lagune-400">Mer</span>Gn
+            <img src={logo} alt="TerreMerGn" className="w-10 h-10 rounded-lg object-contain bg-white" />
+            <span>Terre<span className="text-lagune-400">Mer</span>Gn</span>
           </div>
           <p className="text-sm text-white/60 mt-3 max-w-sm leading-relaxed">
             La première place de marché digitale dédiée aux pêcheurs, éleveurs
@@ -16,12 +17,12 @@ export default function Footer() {
           </p>
           <div className="flex flex-col gap-2 mt-5 text-sm text-white/70">
             <span className="flex items-center gap-2"><MapPin size={14} className="text-lagune-400" /> Conakry, Guinée</span>
-            <a href="mailto:contact@terremergn.com" className="flex items-center gap-2 hover:text-white transition-colors">
+            <Link to="/contact" className="flex items-center gap-2 hover:text-white transition-colors">
               <Mail size={14} className="text-lagune-400" /> contact@terremergn.com
-            </a>
-            <a href="tel:+224620000000" className="flex items-center gap-2 hover:text-white transition-colors">
+            </Link>
+            <Link to="/contact" className="flex items-center gap-2 hover:text-white transition-colors">
               <Phone size={14} className="text-lagune-400" /> +224 620 00 00 00
-            </a>
+            </Link>
           </div>
         </div>
 
@@ -32,6 +33,7 @@ export default function Footer() {
             <li><Link to="/register" className="hover:text-lagune-300 transition-colors">Créer un compte</Link></li>
             <li><Link to="/annonces/nouvelle" className="hover:text-lagune-300 transition-colors">Publier une annonce</Link></li>
             <li><Link to="/login" className="hover:text-lagune-300 transition-colors">Connexion</Link></li>
+            <li><Link to="/contact" className="hover:text-lagune-300 transition-colors">Nous contacter</Link></li>
           </ul>
         </div>
 

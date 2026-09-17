@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700;800&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap");
 
 @tailwind base;
 @tailwind components;
@@ -7,6 +7,8 @@
 @layer base {
   body {
     @apply bg-sable text-encre font-sans antialiased;
+    color: #17231e;
+    letter-spacing: 0;
   }
   h1, h2, h3, h4 {
     @apply font-display font-bold tracking-tight;
@@ -21,6 +23,7 @@
            placeholder:text-slate-400 outline-none transition-all duration-200
            focus:border-ocean-500 focus:ring-4 focus:ring-ocean-100;
   }
+  input::placeholder, textarea::placeholder { color: #64748b; opacity: 1; }
   ::selection { @apply bg-ocean-200 text-ocean-900; }
   ::-webkit-scrollbar { width: 8px; height: 8px; }
   ::-webkit-scrollbar-thumb { @apply bg-slate-300 rounded-full; }
@@ -28,7 +31,7 @@
 }
 
 @layer components {
-  .conteneur { @apply max-w-6xl mx-auto px-4; }
+  .conteneur { @apply max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8; }
 
   /* ---------- Boutons ---------- */
   .btn-primaire {
@@ -154,11 +157,11 @@
            rounded-full min-w-[20px] h-5 flex items-center justify-center px-1;
   }
   .fil-messages {
-    @apply carte flex flex-col overflow-hidden;
+    @apply carte flex flex-col overflow-hidden min-h-0;
   }
   .entete-fil { @apply flex items-center gap-3 px-4 py-3 border-b border-slate-100; }
   .messages-scroll {
-    @apply flex-1 overflow-y-auto p-4 space-y-2 flex flex-col;
+    @apply flex-1 min-h-0 overflow-y-auto p-4 space-y-2 flex flex-col;
   }
   .bulle {
     @apply max-w-[75%] px-4 py-2.5 rounded-2xl text-sm leading-relaxed animate-pop;
@@ -207,6 +210,16 @@
   }
   .footer { @apply bg-ocean-900 text-white/80 mt-16; }
   .input-icone { @apply absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none; }
+}
+
+@layer utilities {
+  /* Les niveaux gris restent lisibles sur les surfaces blanches. */
+  .text-slate-400 { color: #64748b !important; }
+  .text-slate-500 { color: #475569 !important; }
+  .text-white\/40 { color: rgb(255 255 255 / 0.72) !important; }
+  .text-white\/60 { color: rgb(255 255 255 / 0.82) !important; }
+  .text-white\/70 { color: rgb(255 255 255 / 0.88) !important; }
+  .text-white\/80 { color: rgb(255 255 255 / 0.92) !important; }
 }
 
 .line-clamp-2 {

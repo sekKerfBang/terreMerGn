@@ -13,8 +13,9 @@ export default function Messages() {
   const [fil, setFil] = useState([]);
   const [texte, setTexte] = useState("");
   const [envoiEnCours, setEnvoiEnCours] = useState(false);
-  const basRef = useRef(null);
+  const messagesRef = useRef(null);
   const intervalRef = useRef(null);
+  const autoScrollRef = useRef(true);
 
   const chargerConversations = useCallback(
     () => api.get("/messages/conversations/").then((res) => setConversations(res.data)),
@@ -23,6 +24,9 @@ export default function Messages() {
 
   const chargerFil = useCallback(() => {
     if (!userId) return Promise.resolve();
+    const panneau = messagesRef.current;
+    autoScrollRef.current = !panneau
+      || panneau.scrollHeight - panneau.scrollTop - panneau.clientHeight < 80;
     return api.get(`/messages/fil/${userId}/`).then((res) => setFil(res.data));
   }, [userId]);
 
@@ -38,7 +42,11 @@ export default function Messages() {
   }, [chargerConversations, chargerFil]);
 
   useEffect(() => {
-    basRef.current?.scrollIntoView({ behavior: "smooth" });
+    if (!autoScrollRef.current || !messagesRef.current) return;
+    messagesRef.current.scrollTo({
+      top: messagesRef.current.scrollHeight,
+      behavior: "smooth",
+    });
   }, [fil]);
 
   const envoyer = async (e) => {
@@ -130,7 +138,7 @@ export default function Messages() {
                 </div>
               </div>
 
-              <div className="messages-scroll">
+              <div ref={messagesRef} className="messages-scroll">
                 {fil.length === 0 && (
                   <p className="text-center text-slate-300 text-sm py-10">
                     Écrivez votre premier message 👋
@@ -143,7 +151,6 @@ export default function Messages() {
                     <small>{new Date(m.envoye_le).toLocaleString("fr-FR", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" })}</small>
                   </div>
                 ))}
-                <div ref={basRef}></div>
               </div>
 
               <form onSubmit={envoyer} className="form-message">
